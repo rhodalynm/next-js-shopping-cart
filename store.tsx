@@ -12,8 +12,7 @@ const persistConfig = {
 
 const initialState = {
   currency: "USD",
-  rates: "",
-  _persist: { version: -1, rehydrated: false}
+  rates: ""
 };
 
 const reducer = (state = initialState, action) => {

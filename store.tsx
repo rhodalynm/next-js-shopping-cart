@@ -13,6 +13,7 @@ const persistConfig = {
 const initialState = {
   currency: "USD",
   rates: "",
+  _persist: { version: -1, rehydrated: false}
 };
 
 const reducer = (state = initialState, action) => {
@@ -28,6 +29,8 @@ const reducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export type RootState = ReturnType<typeof reducer>
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 let store = createStore(persistedReducer);

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { CHANGE, currenciesList } from "../../constants/constants";
 import { Rates } from "../../context/ShoppingCart";
+import { RootState } from "../../store";
 
 type Props = {
   rates: Rates;
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const onChangeCurrency = (rates) => {
-  const currency = useSelector((state) => state.currency);
+  const currency = useSelector((state: RootState) => state.currency);
   const dispatch = useDispatch();
 
   const changeCurrency = (e) =>

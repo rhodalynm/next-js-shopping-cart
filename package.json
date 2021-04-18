@@ -1,0 +1,52 @@
+{
+  "name": "next-js-shopping-cart",
+  "version": "1.0.0",
+  "description": "Online Store",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint pages components context --ext .ts,.tsx --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "^4.11.2",
+    "@zeit/next-sass": "^1.0.0",
+    "next": "^10.1.3",
+    "next-redux-wrapper": "^6.0.2",
+    "node-sass": "^5.0.0",
+    "react": "^17.0.2",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.1.0",
+    "react-responsive": "^8.2.0",
+    "redux": "^4.0.0",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-persist": "^6.0.0",
+    "styled-components": "^5.2.3"
+  },
+  "devDependencies": {
+    "@types/next": "^9.0.0",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^9.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "typescript": "^4.2.4",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-middleware": "^4.1.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

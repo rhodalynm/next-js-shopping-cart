@@ -36,10 +36,9 @@ let store = createStore(persistedReducer);
 function initStore(preloadedState = initialState) {
   return createStore(
     persistReducer(persistConfig, reducer),
-    preloadedState,
     composeWithDevTools(applyMiddleware())
   );
-}
+} 
 
 export const initializeStore = (preloadedState) => {
   let _store = store ?? initStore(preloadedState);

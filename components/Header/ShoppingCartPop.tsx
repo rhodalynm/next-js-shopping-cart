@@ -19,7 +19,7 @@ import StyledBadge from "./StyledBadge";
 import { ProductLocal, CartContext, Init } from "../../context/ShoppingCart";
 import useCurrency from "../../selectors/currencySelector";
 import currencyConverter from "../../utils/currencyConverter";
-import EmptyCart from "./EmtyCart";
+import EmptyCart from "./EmptyCart";
 
 const useStyles = makeStyles((theme) => ({
   typography: {

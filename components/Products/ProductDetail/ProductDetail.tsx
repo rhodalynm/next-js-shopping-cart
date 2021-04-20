@@ -11,6 +11,8 @@ import currencyConverter from "../../../utils/currencyConverter";
 import useCurrency from "../../../selectors/currencySelector";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
+import {ADD_PRODUCT} from "../../../constants/constants"
+
 type Props = {
   id: number;
   price: number;
@@ -41,10 +43,9 @@ const onAddToCart = (selectedProduct) => {
 
   const addButtonClicked = () =>
     dispatch({
-      type: "ADD_PRODUCT",
+      type: ADD_PRODUCT,
       cart: cart,
-      payload: selectedProduct,
-      isAdded: true,
+      payload: selectedProduct
     });
 
   return { addButtonClicked };
@@ -86,7 +87,7 @@ const ProductDetail = ({
         </Box>
         <Box m={6}>
           <Typography align="center" gutterBottom variant="h5" component="h2">
-            {title} {isMobile}
+            {title}
           </Typography>
           &nbsp;
           <Typography>{description}</Typography>

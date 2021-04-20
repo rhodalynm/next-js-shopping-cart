@@ -1,4 +1,6 @@
 export const CHANGE = 'CHANGE_CURRENCY'
+export const REMOVE_PRODUCT = 'REMOVE_PRODUCT'
+export const ADD_PRODUCT = 'ADD_PRODUCT'
 
 export const GBP = 'GBP'
 export const JPY = 'JPY'

@@ -21,6 +21,7 @@ import currencyConverter from "../../utils/currencyConverter";
 import EmptyCart from "./EmptyCart";
 import { useDispatch } from "react-redux";
 import { ProductLocal } from "../../store";
+import { REMOVE_PRODUCT } from "../../constants/constants";
 
 const useStyles = makeStyles((theme) => ({
   typography: {
@@ -47,11 +48,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-around",
     alignItems: "center",
   },
+  total: {
+    justifyContent: "space-around",
+    alignItems: "left",
+  },
 }));
 
 type Props = {
   cart: ProductLocal[];
   totalItems: number;
+  totalAmount: number;
 };
 
 const onRemoveToCart = (productID, cart) => {
@@ -59,7 +65,7 @@ const onRemoveToCart = (productID, cart) => {
 
   const removeProduct = () =>
     dispatch({
-      type: "REMOVE_PRODUCT",
+      type: REMOVE_PRODUCT,
       cart: cart,
       payload: productID,
     });
@@ -75,7 +81,11 @@ const generate = (element) => {
   );
 };
 
-export default function ShoppingCartPop({ cart, totalItems }: Props) {
+export default function ShoppingCartPop({
+  cart,
+  totalItems,
+  totalAmount,
+}: Props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dense] = React.useState(false);
@@ -91,14 +101,15 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
   const id = open ? "simple-popover" : undefined;
 
   const { currency, rates } = useCurrency();
-
+  const { convertedPrice } = currencyConverter(totalAmount, currency, rates);
   const cartItems = cart.map((product: ProductLocal) => {
     const { convertedPrice } = currencyConverter(
       product.price,
       currency,
       rates
     );
-    const totalAmount = product.quantity * convertedPrice;
+    const totalAmountPerItem = product.quantity * convertedPrice;
+
     const { removeProduct } = onRemoveToCart(product.id, cart);
     return (
       <List dense={dense}>
@@ -120,7 +131,7 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
                     color="textPrimary"
                   >
                     {currency}{" "}
-                    {totalAmount.toLocaleString(undefined, {
+                    {totalAmountPerItem.toLocaleString(undefined, {
                       maximumFractionDigits: 2,
                     })}
                   </Typography>
@@ -148,7 +159,7 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
 
   if (cartItems.length > 0) {
     return (
-      <div>
+      <React.Fragment>
         <IconButton color="inherit" aria-label="show cart" component="span">
           <StyledBadge
             color="secondary"
@@ -174,13 +185,21 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
           }}
         >
           {cartItems}
+          <Box m={2} className={`${classes.spreadBox} ${classes.total}`}>
+            <Typography>
+              Total Amount: {currency}{" "}
+              {convertedPrice.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+              })}
+            </Typography>
+          </Box>
           <Box m={2} className={`${classes.spreadBox} ${classes.box}`}>
             <Button variant="contained" color="default">
               PROCEED TO CHECKOUT
             </Button>
           </Box>
         </Popover>
-      </div>
+      </React.Fragment>
     );
   } else {
     return <EmptyCart />;

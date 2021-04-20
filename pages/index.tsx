@@ -6,9 +6,9 @@ import Header from "../components/Header/Header";
 import Products from "../components/Products/Products";
 import Footer from "../components/Footer/Footer";
 
-import { ProductWeb, Rates } from "../store";
+import { ProductLocal, Rates } from "../store";
 
-const Index: FunctionComponent<{ products: ProductWeb[]; rates: Rates }> = ({
+const Index: FunctionComponent<{ products: ProductLocal[]; rates: Rates }> = ({
   products,
   rates,
 }) => (

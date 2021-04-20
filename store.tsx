@@ -3,7 +3,7 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import { CHANGE } from "./constants/constants";
+import { CHANGE, ADD_PRODUCT, REMOVE_PRODUCT } from "./constants/constants";
 
 
 const persistConfig = {
@@ -27,11 +27,7 @@ export type Rates = {
   USD: number;
 };
 
-export type ProductWeb = Product & { id: string };
-
 export type ProductLocal = Product & { id: number };
-
-
 
 const initialState = {
   currency: "USD",
@@ -50,7 +46,7 @@ const reducer = (state = initialState, action) => {
         rates: action.rates,
       };
     
-      case 'REMOVE_PRODUCT': {
+      case REMOVE_PRODUCT: {
         const newCart = state.cart.filter((x) => x.id !== action.payload);
         const newTotalItems = newCart.length;
         const newTotalAmount = newCart.reduce((acc, currentProduct) => acc + currentProduct.price * currentProduct.quantity, 0);
@@ -61,7 +57,7 @@ const reducer = (state = initialState, action) => {
           totalAmount: newTotalAmount,
         };
       }
-      case 'ADD_PRODUCT': {
+      case ADD_PRODUCT: {
         const newCart = [...state.cart];
         const productID = action.payload.id;
         const productQty = action.payload.quantity;

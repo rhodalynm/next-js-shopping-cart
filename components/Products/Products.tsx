@@ -4,10 +4,10 @@ import Container from "@material-ui/core/Container";
 import ProductItem from "./ProductItem/ProductItem";
 import useCurrency from "../../selectors/currencySelector";
 import { makeStyles } from "@material-ui/core/styles";
-import { ProductWeb } from "../../store";
+import { ProductLocal } from "../../store";
 
 type Props = {
-  productsList: ProductWeb[];
+  productsList: ProductLocal[];
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +26,7 @@ const Products = ({ productsList }: Props) => {
       title={product.title}
       description={product.description}
       image={product.image}
-      id={parseInt(product.id, 10)}
+      id={product.id}
       currency={currency}
     />
   ));

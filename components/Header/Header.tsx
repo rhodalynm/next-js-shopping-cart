@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = ({ rates }: Props) => {
   const classes = useStyles();
-  const {cart, totalItems} = useCart()
+  const {cart, totalItems, totalAmount} = useCart()
 
   return (
     <React.Fragment>
@@ -128,7 +128,7 @@ const Header = ({ rates }: Props) => {
           </div>
           <Currency rates={rates} />
           
-          <ShoppingCartPop cart={cart} totalItems={totalItems} />
+          <ShoppingCartPop cart={cart} totalItems={totalItems} totalAmount={totalAmount} />
         </Toolbar>
       </StyledAppBar>
     </React.Fragment>

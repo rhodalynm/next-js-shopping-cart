@@ -6,8 +6,7 @@ import Select from "@material-ui/core/Select";
 import { useSelector, useDispatch } from "react-redux";
 
 import { CHANGE, currenciesList } from "../../constants/constants";
-import { Rates } from "../../context/ShoppingCart";
-import { RootState } from "../../store";
+import { RootState, Rates } from "../../store";
 
 type Props = {
   rates: Rates;

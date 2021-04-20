@@ -5,14 +5,40 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { CHANGE } from "./constants/constants";
 
+
 const persistConfig = {
   key: "root",
   storage,
 };
 
+type Product = {
+  price: number;
+  image: string;
+  title: string;
+  quantity: number;
+  description: string;
+  currency: string;
+};
+
+export type Rates = {
+  GBP: number;
+  JPY: number;
+  EUR: number;
+  USD: number;
+};
+
+export type ProductWeb = Product & { id: string };
+
+export type ProductLocal = Product & { id: number };
+
+
+
 const initialState = {
   currency: "USD",
-  rates: ""
+  rates: "",
+  cart: [],
+  totalItems: 0,
+  totalAmount: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,7 +49,37 @@ const reducer = (state = initialState, action) => {
         currency: action.currency,
         rates: action.rates,
       };
-
+    
+      case 'REMOVE_PRODUCT': {
+        const newCart = state.cart.filter((x) => x.id !== action.payload);
+        const newTotalItems = newCart.length;
+        const newTotalAmount = newCart.reduce((acc, currentProduct) => acc + currentProduct.price * currentProduct.quantity, 0);
+        return {
+          ...state,
+          cart: newCart,
+          totalItems: newTotalItems,
+          totalAmount: newTotalAmount,
+        };
+      }
+      case 'ADD_PRODUCT': {
+        const newCart = [...state.cart];
+        const productID = action.payload.id;
+        const productQty = action.payload.quantity;
+        const isExist = newCart.findIndex((element) => element.id === productID);
+        if (isExist !== -1) {
+          newCart[isExist].quantity += productQty;
+        } else {
+          newCart.push(action.payload);
+        }
+        const newTotalItems = newCart.length;
+        const newTotalAmount = newCart.reduce((acc, currentProduct) => acc + currentProduct.price * currentProduct.quantity, 0);
+        return {
+          ...state,
+          cart: newCart,
+          totalItems: newTotalItems,
+          totalAmount: newTotalAmount,
+        };
+      }
     default:
       return state;
   }

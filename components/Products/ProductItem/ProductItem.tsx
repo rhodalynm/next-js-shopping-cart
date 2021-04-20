@@ -11,14 +11,28 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 
-import { ProductLocal } from "../../../context/ShoppingCart";
 import Counter from "../../Counter/Counter";
-import currencyConverter from "../../../utils/currencyConverter"
+import currencyConverter from "../../../utils/currencyConverter";
 import useCurrency from "../../../selectors/currencySelector";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
 
+const onAddToCart = (selectedProduct) => {
+  const cart = useSelector((state: RootState) => state.cart);
+
+  const dispatch = useDispatch();
+
+  const addButtonClicked = () =>
+    dispatch({
+      type: "ADD_PRODUCT",
+      cart: cart,
+      payload: selectedProduct,
+    });
+
+  return { addButtonClicked };
+};
 
 type Props = {
-  addToCart: (product: ProductLocal) => void;
   id: number;
   price: number;
   image: string;
@@ -57,12 +71,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   root: {
-    backgroundSize: "contain"
-  }
+    backgroundSize: "contain",
+  },
 }));
 
 const ProductItem = ({
-  addToCart,
   id,
   price,
   image,
@@ -71,45 +84,41 @@ const ProductItem = ({
   currency,
 }: Props) => {
   const [quantity, updateQuantity] = useState<number>(1);
-  const [isAdded, setAddState] = useState<boolean>(false);
-  const addButtonClicked = (
-    imageLocal: string,
-    titleLocal: string,
-    priceLocal: number,
-    idLocal: number,
-    quantityLocal: number,
-    descriptionLocal: string,
-    currencyLocal: string
-  ) => {
-    const selectedProduct = {
-      image: imageLocal,
-      title: titleLocal,
-      price: priceLocal,
-      id: idLocal,
-      quantity: quantityLocal,
-      description: descriptionLocal,
-      currency: currencyLocal,
-    };
-    addToCart(selectedProduct);
-    setAddState(true);
+  const selectedProduct = {
+    image: image,
+    title: title,
+    price: price,
+    id: id,
+    quantity: quantity,
+    description: description,
+    currency: currency,
   };
-  const classes = useStyles()
-  const { rates } = useCurrency()
-  const {convertedPrice} = currencyConverter(price, currency, rates)
+  const { addButtonClicked } = onAddToCart(selectedProduct);
+  const classes = useStyles();
+  const { rates } = useCurrency();
+  const { convertedPrice } = currencyConverter(price, currency, rates);
+  const isAdded = false; //todo
   return (
     <Grid item key={id} xs={12} sm={6} md={4}>
       <Card className={classes.card}>
-        <CardMedia classes={{
-            root: classes.root
-          }}  className={classes.cardMedia} image={image} title={title} />
+        <CardMedia
+          classes={{
+            root: classes.root,
+          }}
+          className={classes.cardMedia}
+          image={image}
+          title={title}
+        />
         <CardActionArea>
           <CardContent className={classes.cardContent}>
             <Typography gutterBottom component="h4">
               {title.substr(0, 25)}
             </Typography>
             <Typography>
-              {currency}{' '}
-              {convertedPrice.toLocaleString(undefined,{maximumFractionDigits: 2})}
+              {currency}{" "}
+              {convertedPrice.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+              })}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -124,21 +133,7 @@ const ProductItem = ({
               </Link>
             </Button>
 
-            <Button
-              onClick={() =>
-                addButtonClicked(
-                  image,
-                  title,
-                  price,
-                  id,
-                  quantity,
-                  description,
-                  currency
-                )
-              }
-              size="small"
-              color="primary"
-            >
+            <Button onClick={addButtonClicked} size="small" color="primary">
               {!isAdded ? "ADD TO CART" : "✔ ADDED"}
             </Button>
           </Box>

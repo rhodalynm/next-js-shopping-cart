@@ -1,15 +1,14 @@
 import React, { FunctionComponent } from "react";
 import { GetStaticProps } from "next";
 import Container from "@material-ui/core/Container";
-import Error from 'next/error'
 
 import Header from "../components/Header/Header";
 import Products from "../components/Products/Products";
 import Footer from "../components/Footer/Footer";
 
-import { ProductWeb, Rates } from "../context/ShoppingCart";
+import { ProductWeb, Rates } from "../store";
 
-const Index: FunctionComponent<{ errorCode, ratesErrorCode, products: ProductWeb[]; rates: Rates }> = ({
+const Index: FunctionComponent<{ products: ProductWeb[]; rates: Rates }> = ({
   products,
   rates,
 }) => (

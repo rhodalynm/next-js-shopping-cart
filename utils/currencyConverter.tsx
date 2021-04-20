@@ -1,5 +1,5 @@
 import { GBP, JPY, EUR, USD } from "../constants/constants";
-import { Rates } from "../context/ShoppingCart";
+import { Rates } from "../store";
 
 const currencyConverter = (price: number, currency: string, rates: Rates) => {
   let toRate = 1;

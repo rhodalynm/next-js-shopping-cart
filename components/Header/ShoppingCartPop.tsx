@@ -16,10 +16,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Box from "@material-ui/core/Box";
 import StyledBadge from "./StyledBadge";
 
-import { ProductLocal, CartContext, Init } from "../../context/ShoppingCart";
 import useCurrency from "../../selectors/currencySelector";
 import currencyConverter from "../../utils/currencyConverter";
 import EmptyCart from "./EmptyCart";
+import { useDispatch } from "react-redux";
+import { ProductLocal } from "../../store";
 
 const useStyles = makeStyles((theme) => ({
   typography: {
@@ -53,6 +54,19 @@ type Props = {
   totalItems: number;
 };
 
+const onRemoveToCart = (productID, cart) => {
+  const dispatch = useDispatch();
+
+  const removeProduct = () =>
+    dispatch({
+      type: "REMOVE_PRODUCT",
+      cart: cart,
+      payload: productID,
+    });
+
+  return { removeProduct };
+};
+
 const generate = (element) => {
   return [0].map((value) =>
     React.cloneElement(element, {
@@ -65,7 +79,6 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [dense] = React.useState(false);
-  const { removeProduct } = useContext<Init>(CartContext);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -86,7 +99,7 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
       rates
     );
     const totalAmount = product.quantity * convertedPrice;
-
+    const { removeProduct } = onRemoveToCart(product.id, cart);
     return (
       <List dense={dense}>
         {generate(
@@ -124,7 +137,7 @@ export default function ShoppingCartPop({ cart, totalItems }: Props) {
 
             <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="delete">
-                <DeleteIcon onClick={() => removeProduct(product.id)} />
+                <DeleteIcon onClick={removeProduct} />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>

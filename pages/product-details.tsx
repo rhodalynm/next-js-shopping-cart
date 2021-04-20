@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { GetServerSideProps } from "next";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
@@ -9,7 +8,7 @@ import Header from "../components/Header/Header";
 import ProductDetail from "../components/Products/ProductDetail/ProductDetail";
 import Footer from "../components/Footer/Footer";
 import useCurrency from "../selectors/currencySelector";
-import { CartContext, Init } from "../context/ShoppingCart";
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await fetch(
@@ -36,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductDetails = ({ product }) => {
   const { currency, rates } = useCurrency();
-  const { addProduct } = useContext<Init>(CartContext);
   const productPrice = product.price;
   const classes = useStyles();
   return (
@@ -49,7 +47,6 @@ const ProductDetails = ({ product }) => {
           description={product.description}
           image={product.image}
           id={parseInt(product.id, 10)}
-          addToCart={addProduct}
           currency={currency}
         />
       </Box>

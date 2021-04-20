@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import ProductItem from './ProductItem/ProductItem';
-import useCurrency from '../../selectors/currencySelector';
-import { makeStyles } from '@material-ui/core/styles';
-import { CartContext, Init, ProductWeb } from '../../context/ShoppingCart';
+import React, { useContext } from "react";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import ProductItem from "./ProductItem/ProductItem";
+import useCurrency from "../../selectors/currencySelector";
+import { makeStyles } from "@material-ui/core/styles";
+import { ProductWeb } from "../../store";
 
 type Props = {
   productsList: ProductWeb[];
@@ -19,21 +19,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Products = ({ productsList }: Props) => {
   const { currency } = useCurrency();
-  const { addProduct } = useContext<Init>(CartContext);
   const classes = useStyles();
-  
-  const productsData = productsList
-    .map((product) => (
-      <ProductItem
-        price={product.price}
-        title={product.title}
-        description={product.description}
-        image={product.image}
-        id={parseInt(product.id, 10)}
-        addToCart={addProduct}
-        currency={currency}
-      />
-    ));
+  const productsData = productsList.map((product) => (
+    <ProductItem
+      price={product.price}
+      title={product.title}
+      description={product.description}
+      image={product.image}
+      id={parseInt(product.id, 10)}
+      currency={currency}
+    />
+  ));
 
   return (
     <Container className={classes.cardGrid} maxWidth="md">

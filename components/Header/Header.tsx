@@ -9,9 +9,10 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 
-import { CartContext, Init, Rates } from "../../context/ShoppingCart";
+import { Rates } from "../../store";
 import Currency from "../Currency/Currency";
 import ShoppingCartPop from "./ShoppingCartPop";
+import useCart from "../../selectors/cartSelector"
 
 type Props = {
   rates: Rates;
@@ -89,10 +90,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = ({ rates }: Props) => {
   const classes = useStyles();
-  const { cart, totalItems } = useContext<Init>(CartContext);
-
-
-  
+  const {cart, totalItems} = useCart()
 
   return (
     <React.Fragment>

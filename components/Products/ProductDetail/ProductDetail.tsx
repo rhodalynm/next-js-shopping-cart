@@ -4,14 +4,14 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from "react-responsive";
 
-import { ProductLocal } from "../../../context/ShoppingCart";
 import Counter from "../../Counter/Counter";
-import currencyConverter from "../../../utils/currencyConverter"
-import useCurrency from "../../../selectors/currencySelector"
+import currencyConverter from "../../../utils/currencyConverter";
+import useCurrency from "../../../selectors/currencySelector";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
 type Props = {
-  addToCart: (product: ProductLocal) => void;
   id: number;
   price: number;
   image: string;
@@ -31,12 +31,26 @@ const useStyles = makeStyles((theme) => ({
   },
   imageClass: {
     height: "75%",
-    width: "75%"
-  }
+    width: "75%",
+  },
 }));
 
+const onAddToCart = (selectedProduct) => {
+  const cart = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
+
+  const addButtonClicked = () =>
+    dispatch({
+      type: "ADD_PRODUCT",
+      cart: cart,
+      payload: selectedProduct,
+      isAdded: true,
+    });
+
+  return { addButtonClicked };
+};
+
 const ProductDetail = ({
-  addToCart,
   id,
   price,
   image,
@@ -45,36 +59,28 @@ const ProductDetail = ({
   currency,
 }: Props) => {
   const [quantity, updateQuantity] = useState<number>(1);
-  const [isAdded, setAddState] = useState<boolean>(false);
 
-  const addButtonClicked = (
-    imageLocal: string,
-    titleLocal: string,
-    priceLocal: number,
-    idLocal: number,
-    quantityLocal: number,
-    descriptionLocal: string,
-    currencyLocal: string
-  ) => {
-    const selectedProduct = {
-      image: imageLocal,
-      title: titleLocal,
-      price: priceLocal,
-      id: idLocal,
-      quantity: quantityLocal,
-      description: descriptionLocal,
-      currency: currencyLocal,
-    };
-    addToCart(selectedProduct);
-    setAddState(true);
+  const selectedProduct = {
+    image: image,
+    title: title,
+    price: price,
+    id: id,
+    quantity: quantity,
+    description: description,
+    currency: currency,
   };
-  const classes = useStyles()
-  const { rates } = useCurrency()
+  const { addButtonClicked } = onAddToCart(selectedProduct);
+  const isAdded = false;
+  const classes = useStyles();
+  const { rates } = useCurrency();
   const { convertedPrice } = currencyConverter(price, currency, rates);
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   return (
     <Box width="100%">
-      <Paper variant="outlined" className={isMobile ? `` : `${classes.spreadBox} ${classes.box}`}>
+      <Paper
+        variant="outlined"
+        className={isMobile ? `` : `${classes.spreadBox} ${classes.box}`}
+      >
         <Box m={2} className={`${classes.spreadBox} ${classes.box}`}>
           <img src={image} className={classes.imageClass} />
         </Box>
@@ -86,8 +92,10 @@ const ProductDetail = ({
           <Typography>{description}</Typography>
           &nbsp;
           <Typography>
-            {currency} {' '}
-            {convertedPrice.toLocaleString(undefined, {maximumFractionDigits: 2})}
+            {currency}{" "}
+            {convertedPrice.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}
           </Typography>
         </Box>
       </Paper>
@@ -95,21 +103,7 @@ const ProductDetail = ({
         <Counter productQuantity={quantity} updateQuantity={updateQuantity} />
       </Box>
       <Box className={`${classes.spreadBox} ${classes.box}`}>
-        <Button
-          onClick={() =>
-            addButtonClicked(
-              image,
-              title,
-              price,
-              id,
-              quantity,
-              description,
-              currency
-            )
-          }
-          size="small"
-          color="primary"
-        >
+        <Button onClick={addButtonClicked} size="small" color="primary">
           {!isAdded ? "ADD TO CART" : "✔ ADDED"}
         </Button>
       </Box>

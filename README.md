@@ -6,4 +6,10 @@ cd next-js-shopping-cart
 
 npm install
 
-npm run dev
+npm run build
+
+npm run start
+
+
+
+AWS EC2 instance: http://ec2-54-179-206-39.ap-southeast-1.compute.amazonaws.com/

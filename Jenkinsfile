@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git([url: 'https://github.com/rhodalynm/next-js-shopping-cart.git', branch: 'main', credentialsId: 'rhodalynm'])
+        git([url: 'https://github.com/rhodalynm/next-js-shopping-cart.git', branch: 'master'])
  
       }
     }

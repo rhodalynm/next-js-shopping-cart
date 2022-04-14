@@ -1,7 +1,7 @@
 pipeline {
   environment {
-    imagename = "kevalnagda/flaskapp"
-    registryCredential = 'kevalnagda'
+    imagename = "rhodalynm/next-js-shopping-cart"
+    registryCredential = 'rhodalynm'
     dockerImage = ''
   }
   agent any
